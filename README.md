@@ -16,8 +16,9 @@ Usage
 =====
 
 1. Backup Firefox Bookmarks to json file
-2. `java FirefoxToChrome infile.json outfile.html`
-3. Import html file with  Chrome.
+2. `javac FirefoxToChrome.java`
+3. `java FirefoxToChrome infile.json outfile.html`
+4. Import html file with Chrome.
 
 Third party libraries
 =====================
