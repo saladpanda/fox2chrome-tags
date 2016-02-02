@@ -30,8 +30,10 @@ public class FirefoxToChrome {
 			} else {
 				// recursion
 				JSONArray rootChildren = (JSONArray) root.get("children");
-				for (Object child : rootChildren) {
-					extractPlaces((JSONObject)child, bookmarksList);
+				if (rootChildren != null) {
+					for (Object child : rootChildren) {
+						extractPlaces((JSONObject)child, bookmarksList);
+					}
 				}
 			}
 		} else if (root.get("type").equals("text/x-moz-place")) {
