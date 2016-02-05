@@ -3,7 +3,7 @@ import java.util.*;
 public class Bookmark {
 	String title;
 	String uri;
-	ArrayList<String> tags = new ArrayList<String>();
+	HashSet<String> tags = new HashSet<String>();
 	
 	public Bookmark(String title, String uri) {
 		this.title = title;
@@ -32,16 +32,17 @@ public class Bookmark {
 	 */
 	@Override
 	public String toString() {
-		String s = title;
-		s += " [";
-		for (int i=0; i<this.tags.size(); i++) {
-			s += this.tags.get(i);
-			if (i < this.tags.size()-1) {
-				s += ", ";
-			}
-		}
-		s += "]";
+		StringBuilder s = new StringBuilder(title).append(" [");
 		
-		return s;
+		StringBuilder taglist = new StringBuilder();
+		for (String tag : tags) {
+			if (taglist.length() != 0) {
+				taglist.append(", ");
+			}
+			taglist.append(tag);
+		}
+
+		s.append(taglist).append("]");
+		return s.toString();
 	}
 }
