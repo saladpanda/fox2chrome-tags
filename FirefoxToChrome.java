@@ -24,16 +24,11 @@ public class FirefoxToChrome {
 	
 	public static void extractPlaces(JSONObject root, ArrayList<Bookmark> bookmarksList) {
 		if (root.get("type").equals("text/x-moz-place-container")) {
-			if (root.get("root") != null && root.get("root").equals("tagsFolder")) {
-				// We have a separate Method for the tags
-				extractTags(root, bookmarksList);
-			} else {
-				// recursion
-				JSONArray rootChildren = (JSONArray) root.get("children");
-				if (rootChildren != null) {
-					for (Object child : rootChildren) {
-						extractPlaces((JSONObject)child, bookmarksList);
-					}
+			// recursion
+			JSONArray rootChildren = (JSONArray) root.get("children");
+			if (rootChildren != null) {
+				for (Object child : rootChildren) {
+					extractPlaces((JSONObject)child, bookmarksList);
 				}
 			}
 		} else if (root.get("type").equals("text/x-moz-place")) {
@@ -41,11 +36,18 @@ public class FirefoxToChrome {
 			
 			String title = (String)place.get("title");
 			String uri = (String)place.get("uri");
+			String tags = (String)place.get("tags");
 			
 			// ignore firefox-specific folders etc.
 			if (uri.startsWith("place:")) return;
 			
 			Bookmark currentBookmark = new Bookmark(title, uri);
+			if (tags != null) {
+				for (String tag : tags.split(",")) {
+					currentBookmark.tags.add(tag);
+				}
+			}
+
 			if (! bookmarksList.contains(currentBookmark)) {
 				// create a new Bookmark
 				bookmarksList.add(currentBookmark);
@@ -60,39 +62,6 @@ public class FirefoxToChrome {
 				if (oldBookmark.title == null && currentBookmark.title != null) {
 					oldBookmark.title = title;
 				}
-			}
-		}
-	}
-	
-	public static void extractTags(JSONObject tagsFolder, ArrayList<Bookmark> bookmarksList) {
-		/*
-		 * For each tag...
-		 */
-		for (Object tagObject : (JSONArray)tagsFolder.get("children")) {
-			JSONObject tag = (JSONObject) tagObject;
-			JSONArray tagChildren = (JSONArray) tag.get("children");
-			String tagTitle = (String)tag.get("title");
-			
-			/*
-			 * ...go through all bookmarks and add the tag to them
-			 * if the don't exist, create them first
-			 */
-			for (Object placeObject : tagChildren) {
-				JSONObject place = (JSONObject) placeObject;
-				
-				String title = (String)place.get("title");
-				String uri = (String)place.get("uri");
-				Bookmark currentBookmark = new Bookmark(title, uri);
-				
-				if (! bookmarksList.contains(currentBookmark)) {
-					// create a new Bookmark
-					bookmarksList.add(currentBookmark);
-				}
-				
-				// add the tag
-				int index = bookmarksList.indexOf(currentBookmark);
-				Bookmark oldBookmark = bookmarksList.get(index);
-				oldBookmark.tags.add(tagTitle);
 			}
 		}
 	}
