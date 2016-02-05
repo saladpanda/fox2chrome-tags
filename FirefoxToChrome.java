@@ -43,25 +43,17 @@ public class FirefoxToChrome {
 			
 			Bookmark currentBookmark = new Bookmark(title, uri);
 			if (tags != null) {
-				for (String tag : tags.split(",")) {
-					currentBookmark.tags.add(tag);
-				}
+				currentBookmark.tags.addAll(tags.split(","));
 			}
 
 			if (! bookmarksList.contains(currentBookmark)) {
 				// create a new Bookmark
 				bookmarksList.add(currentBookmark);
 			} else {
-				/*
-				 * Some of the entries in tagsFolder have
-				 * null-titles.
-				 * I don't know why but i'll just fix it here
-				 */
+				// same bookmark. Merge tags into it.
 				int index = bookmarksList.indexOf(currentBookmark);
 				Bookmark oldBookmark = bookmarksList.get(index);
-				if (oldBookmark.title == null && currentBookmark.title != null) {
-					oldBookmark.title = title;
-				}
+				oldBookmark.tags.addAll(currentBookmark.tags);
 			}
 		}
 	}

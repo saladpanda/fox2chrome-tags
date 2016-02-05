@@ -19,7 +19,7 @@ public class Bookmark {
 		if (! (o instanceof Bookmark)) return false;
 		Bookmark b = (Bookmark) o;
 		
-		if (this.uri.equals(b.uri)) {
+		if (this.uri.equals(b.uri) && this.title.equals(b.title)) {
 			return true;
 		} else {
 			return false;
