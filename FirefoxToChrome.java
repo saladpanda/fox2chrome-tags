@@ -43,7 +43,7 @@ public class FirefoxToChrome {
 			
 			Bookmark currentBookmark = new Bookmark(title, uri);
 			if (tags != null) {
-				currentBookmark.tags.addAll(tags.split(","));
+				currentBookmark.tags.addAll(Arrays.asList(tags.split(",")));
 			}
 
 			if (! bookmarksList.contains(currentBookmark)) {
