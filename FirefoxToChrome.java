@@ -37,11 +37,17 @@ public class FirefoxToChrome {
 			String title = (String)place.get("title");
 			String uri = (String)place.get("uri");
 			String tags = (String)place.get("tags");
-			
+			String ADD_DATE = place.get("dateAdded").toString();
+			String LAST_MODIFIED = place.get("lastModified").toString();	
+
+
+			ADD_DATE = ADD_DATE.substring(0, ADD_DATE.length()-6);
+			LAST_MODIFIED = LAST_MODIFIED.substring(0, LAST_MODIFIED.length()-6);
+
 			// ignore firefox-specific folders etc.
 			if (uri.startsWith("place:")) return;
 			
-			Bookmark currentBookmark = new Bookmark(title, uri);
+			Bookmark currentBookmark = new Bookmark(title, uri, ADD_DATE, LAST_MODIFIED);
 			if (tags != null) {
 				currentBookmark.tags.addAll(Arrays.asList(tags.split(",")));
 			}
@@ -66,7 +72,7 @@ public class FirefoxToChrome {
 		
 		// bookmarks
 		for (Bookmark b : bookmarksList) {
-			pw.println("\t<DT><A HREF=\"" + b.uri + "\" ADD_DATE=\"0\" LAST_VISIT=\"0\" LAST_MODIFIED=\"0\">" + b.toString() + "</A>");
+			pw.println("\t<DT><A HREF=\"" + b.uri + "\" ADD_DATE=\"" + b.ADD_DATE +"\" LAST_MODIFIED=\"" + b.LAST_MODIFIED +"\">" + b.toString() + "</A>");
 		}
 		
 		// footer

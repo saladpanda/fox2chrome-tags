@@ -3,11 +3,21 @@ import java.util.*;
 public class Bookmark {
 	String title;
 	String uri;
+	
+	String ADD_DATE;
+	String LAST_MODIFIED;
+	
+	
+	
 	HashSet<String> tags = new HashSet<String>();
 	
-	public Bookmark(String title, String uri) {
+	public Bookmark(String title, String uri, String ADD_DATE, String LAST_MODIFIED) {
 		this.title = title;
 		this.uri = uri;
+
+		this.ADD_DATE = ADD_DATE;
+		this.LAST_MODIFIED = LAST_MODIFIED;
+
 	}
 	
 	/*
@@ -32,6 +42,7 @@ public class Bookmark {
 	 */
 	@Override
 	public String toString() {
+
 		StringBuilder s = new StringBuilder(title).append(" [");
 		
 		StringBuilder taglist = new StringBuilder();
